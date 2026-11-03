@@ -59,7 +59,7 @@
       else if (v.pco2 < low) warnings.push("possibleRespAlk");
     }
     function doMetAlk() {
-      var target=Math.min(55,40+0.7*(v.hco3-24));
+      var target=v.hco3+10;
       response("pco2","metAlk",Math.max(5,target-5),target+5,v.pco2,"metAlk");
       if (v.pco2 > target+5) warnings.push("possibleRespAcid");
       else if (v.pco2 < target-5) warnings.push("possibleRespAlk");
