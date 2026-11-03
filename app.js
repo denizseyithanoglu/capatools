@@ -231,6 +231,7 @@ function renderField(field,idx){
   return block;
 }
 function openCalculator(tool){
+  if(tool.customPage){window.location.href=tool.customPage;return;}
   state.lastFocus=document.activeElement;
   state.active=tool;
   $("dialogIcon").textContent=tool.icon;
