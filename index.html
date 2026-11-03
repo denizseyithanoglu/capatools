@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="tr" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10283a">
+  <meta name="description" content="CAPA Tools — emergency medicine and internal medicine calculators for clinicians in Turkish, Azerbaijani, Arabic and English.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>CAPA Tools · Clinical Calculators</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="engine.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a href="#main" class="skip-link" id="skipLink">İçeriğe geç</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Specialties">
+      <a class="brand" href="./" aria-label="CAPA Tools">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span><strong>CAPA<span class="brand-accent">Tools</span></strong><small id="brandSubtitle">Klinik hesaplayıcılar</small></span>
+      </a>
+      <p class="nav-overline" id="specialtyLabel">UZMANLIK ALANLARI</p>
+      <nav id="categoryNav" aria-label="Specialties"></nav>
+      <div class="sidebar-foot"><span class="status-dot"></span><span id="offlineLabel">Tarayıcıda çalışır · hasta verisi gönderilmez</span></div>
+    </aside>
+    <div class="main-column">
+      <header class="topbar">
+        <button class="mobile-menu icon-btn" type="button" id="menuButton" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+        <span class="topbar-name">CAPA <strong>Tools</strong></span>
+        <div class="topbar-actions">
+          <label for="languageSelect" class="sr-only" id="languageLabel">Dil seçin</label>
+          <select id="languageSelect" aria-label="Language">
+            <option value="tr">Türkçe</option>
+            <option value="az">Azərbaycanca</option>
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+          </select>
+          <button type="button" id="themeButton" class="icon-btn" aria-label="Toggle color theme" title="Appearance">☾</button>
+        </div>
+      </header>
+      <main id="main">
+        <section class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow" id="heroEyebrow">KLİNİK PRATİK İÇİN</span>
+            <h1 id="heroTitle">Doğru hesaplama. Hızlı erişim.</h1>
+            <p id="heroDescription">Acil servis ve dahiliye ekipleri için sade, mobil uyumlu klinik hesaplayıcılar.</p>
+            <div class="hero-metrics" id="heroMetrics"></div>
+          </div>
+          <div class="hero-symbol" aria-hidden="true"><span>+</span><i></i><i></i></div>
+        </section>
+        <section class="workspace" aria-labelledby="sectionTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow dark" id="sectionEyebrow">HESAPLAYICI KÜTÜPHANESİ</p>
+              <h2 id="sectionTitle">Tüm hesaplayıcılar</h2>
+              <p class="section-description" id="sectionDescription"></p>
+            </div>
+          </div>
+          <div class="tool-controls">
+            <div class="search-wrap"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" autocomplete="off" placeholder="Hesaplayıcı ara..." aria-label="Search calculators"></div>
+            <div id="resultCount" class="results-count" aria-live="polite"></div>
+          </div>
+          <div id="toolGrid" class="tool-grid"></div>
+          <div id="emptyState" class="empty-state" hidden><div class="empty-icon">⌕</div><h3 id="emptyTitle"></h3><p id="emptyDescription"></p></div>
+        </section>
+        <section class="safety-note" aria-labelledby="safetyTitle"><span class="safety-icon" aria-hidden="true">ⓘ</span><div><h3 id="safetyTitle">Klinik kullanım uyarısı</h3><p id="safetyText"></p></div></section>
+      </main>
+      <footer class="footer"><span>© <span id="year"></span> CAPA Tools</span><span id="footerText">Açık kaynak · Klinik öncesi doğrulama gerekli</span><a href="https://github.com/denizseyithanoglu/capatools" target="_blank" rel="noopener noreferrer">GitHub ↗</a></footer>
+    </div>
+  </div>
+  <div id="mobileBackdrop" class="mobile-backdrop" hidden></div>
+  <div class="dialog-backdrop" id="dialogBackdrop" hidden>
+    <section class="calc-dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" tabindex="-1">
+      <header class="dialog-head"><div class="dialog-heading"><span class="dialog-icon" id="dialogIcon"></span><div><p class="eyebrow dark" id="dialogCategory"></p><h2 id="dialogTitle"></h2></div></div><button type="button" id="closeDialog" class="icon-btn close-btn" aria-label="Close">✕</button></header>
+      <div class="dialog-scroll">
+        <p id="dialogIntro" class="dialog-intro"></p>
+        <form id="calcForm" novalidate></form>
+        <div class="calc-output" id="calcOutput" hidden aria-live="polite"><div class="output-label" id="outputLabel">Sonuç</div><div class="output-value"><strong id="outputValue"></strong><span id="outputUnit"></span></div><p id="outputInterpretation"></p></div>
+        <div id="calcWarning" class="calc-warning"></div>
+        <div class="reference-block"><span id="referenceLabel">Kaynak</span><a id="referenceLink" href="#" target="_blank" rel="noopener noreferrer"></a><p id="formulaLabel"></p></div>
+      </div>
+      <div class="dialog-footer"><button type="button" class="secondary-btn" id="resetButton">Temizle</button><button type="submit" form="calcForm" class="primary-btn" id="calculateButton">Hesapla <span aria-hidden="true">→</span></button></div>
+    </section>
+  </div>
+  <noscript><p class="noscript">CAPA Tools needs JavaScript to perform calculations.</p></noscript>
+</body>
+</html>
