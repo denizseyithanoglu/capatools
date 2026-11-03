@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10283a">
+  <meta name="description" content="CAPA Tools acid–base assessment: pH, expected compensation, anion gap and delta ratio.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Acid–Base Disorders · CAPA Tools</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="acidbase.css">
+  <script src="acidbase-engine.js" defer></script>
+  <script src="acidbase.js" defer></script>
+</head>
+<body class="acid-page">
+  <a href="#content" class="skip-link">Skip to content</a>
+  <header class="topbar">
+    <a class="ab-brand" href="./"><span class="ab-brand-symbol">+</span><strong>CAPA <em>Tools</em></strong></a>
+    <div class="topbar-actions">
+      <label for="lang" class="sr-only">Language</label>
+      <select id="lang" aria-label="Language">
+        <option value="tr">Türkçe</option><option value="az">Azərbaycanca</option><option value="ar">العربية</option><option value="en">English</option>
+      </select>
+      <button id="theme" type="button" class="icon-btn" aria-label="Toggle theme">☾</button>
+    </div>
+  </header>
+  <main id="content" class="ab-container">
+    <a href="./" class="ab-back" id="back">← Tüm hesaplayıcılar</a>
+    <section class="ab-hero">
+      <div><p class="eyebrow" id="eyebrow">ACİL / GENEL DAHİLİYE</p><h1 id="title">Asit-Baz Bozuklukları</h1><p id="intro">Kan gazı değerlendirmesi, kompansasyon, anyon açıklığı ve karma bozukluklar.</p></div>
+      <div class="ab-hero-icon" aria-hidden="true">pH</div>
+    </section>
+    <section class="ab-normal" aria-label="Reference intervals">
+      <div class="ab-normal-cell"><span>pH</span><strong>7.35–7.45</strong></div>
+      <div class="ab-normal-cell"><span>HCO₃⁻</span><strong>21–27 <small>mEq/L</small></strong></div>
+      <div class="ab-normal-cell"><span>PaCO₂</span><strong>35–45 <small>mmHg</small></strong></div>
+      <div class="ab-normal-cell"><span id="agNormalLabel">Anyon açıklığı</span><strong>≈4–12 <small>mEq/L</small></strong></div>
+    </section>
+    <div class="ab-layout">
+      <section class="ab-panel" aria-labelledby="inputsHeading">
+        <div class="ab-panel-heading"><span class="ab-panel-index">01</span><div><p class="eyebrow dark" id="inputsEyebrow">LABORATUVAR</p><h2 id="inputsHeading">Değerleri girin</h2></div></div>
+        <form id="acidForm" novalidate>
+          <div class="ab-subtitle" id="abgSub">Arter kan gazı (zorunlu)</div>
+          <div class="ab-field-grid">
+            <div class="form-field"><label for="ph">pH</label><div class="input-shell"><input id="ph" name="ph" type="number" min="6.6" max="7.9" step="0.01" inputmode="decimal" required dir="ltr"><span class="field-unit">pH</span></div></div>
+            <div class="form-field"><label for="pco2">PaCO₂</label><div class="input-shell"><input id="pco2" name="pco2" type="number" min="5" max="180" step="any" inputmode="decimal" required dir="ltr"><span class="field-unit">mmHg</span></div></div>
+            <div class="form-field"><label for="hco3">HCO₃⁻</label><div class="input-shell"><input id="hco3" name="hco3" type="number" min="1" max="70" step="any" inputmode="decimal" required dir="ltr"><span class="field-unit">mEq/L</span></div></div>
+          </div>
+          <div class="ab-subtitle optional" id="chemSub">Serum elektrolitleri (isteğe bağlı)</div>
+          <p class="ab-hint" id="chemHelp">Anyon açıklığı için Na ve Cl birlikte girilmelidir. Mümkünse aynı zamandaki serum biyokimya HCO₃ değerini kullanın.</p>
+          <div class="ab-field-grid">
+            <div class="form-field"><label for="na">Na⁺</label><div class="input-shell"><input id="na" name="na" type="number" min="70" max="220" step="any" inputmode="decimal" dir="ltr"><span class="field-unit">mEq/L</span></div></div>
+            <div class="form-field"><label for="cl">Cl⁻</label><div class="input-shell"><input id="cl" name="cl" type="number" min="30" max="180" step="any" inputmode="decimal" dir="ltr"><span class="field-unit">mEq/L</span></div></div>
+            <div class="form-field"><label for="albumin" id="albuminLabel">Albümin</label><div class="input-shell"><input id="albumin" name="albumin" type="number" min="0.5" max="6.5" step="any" inputmode="decimal" dir="ltr"><span class="field-unit">g/dL</span></div></div>
+          </div>
+          <p class="ab-form-error" id="formError" role="alert" aria-live="polite"></p>
+          <div class="ab-actions"><button type="button" class="secondary-btn" id="clear">Temizle</button><button type="submit" class="primary-btn" id="run">Değerlendir →</button></div>
+        </form>
+      </section>
+      <div class="ab-result-column">
+        <section class="ab-panel ab-empty-result" id="placeholder" aria-label="Results">
+          <div class="ab-placeholder-symbol">⌁</div><h2 id="placeholderTitle">Sonuçlar burada görünecek</h2><p id="placeholderText">Arter kan gazı değerlerini girerek dört aşamalı değerlendirmeyi başlatın.</p>
+        </section>
+        <section class="ab-panel" id="results" hidden aria-live="polite">
+          <div class="ab-panel-heading"><span class="ab-panel-index">02</span><div><p class="eyebrow dark" id="resultEyebrow">ANALİZ</p><h2 id="resultsTitle">Değerlendirme</h2></div></div>
+          <div class="ab-result-primary"><span id="phResultLabel">pH durumu</span><strong id="phResult"></strong><div id="primaryResult"></div></div>
+          <div class="ab-result-block"><h3 id="compHeading">Beklenen kompansasyon</h3><div id="compContent"></div></div>
+          <div class="ab-result-block"><h3 id="agHeading">Anyon açıklığı ve delta oranı</h3><div id="agContent"></div></div>
+          <div class="ab-result-block" id="warningsBlock"><h3 id="cautionsHeading">Yorum ve uyarılar</h3><ul id="warnings"></ul></div>
+        </section>
+      </div>
+    </div>
+    <section class="ab-guide ab-panel" aria-labelledby="guideHeading">
+      <div class="ab-panel-heading"><span class="ab-panel-index">03</span><div><p class="eyebrow dark" id="guideEyebrow">HIZLI BAŞVURU</p><h2 id="guideHeading">Dört aşamalı yaklaşım</h2></div></div>
+      <div class="ab-guide-grid" id="guideSteps"></div>
+      <details class="ab-details"><summary id="formulaSummary">Kompansasyon formülleri ve önemli notlar</summary><div class="ab-table-scroll"><table class="ab-ref-table"><thead><tr><th id="disorderHeading">Bozukluk</th><th id="formulaHeading">Beklenen yanıt</th></tr></thead><tbody id="formulaRows"></tbody></table></div><p class="ab-reference-note" id="formulaNote"></p></details>
+      <details class="ab-details"><summary id="causesSummary">Yüksek anyon açıklığı nedenleri</summary><p class="ab-guide-copy" id="causesContent"></p></details>
+      <details class="ab-details"><summary id="deltaSummary">Delta oranı nasıl yorumlanır?</summary><p class="ab-guide-copy" id="deltaContent"></p></details>
+    </section>
+    <section class="safety-note"><span class="safety-icon" aria-hidden="true">ⓘ</span><div><h3 id="safetyHeading">Klinik güvenlik</h3><p id="safetyContent"></p></div></section>
+    <section class="ab-sources" aria-label="References">
+      <h2 id="sourcesHeading">Kaynaklar</h2>
+      <a href="https://www.uptodate.com/contents/simple-and-mixed-acid-base-disorders" target="_blank" rel="noopener noreferrer">UpToDate — Simple and mixed acid-base disorders ↗</a>
+      <a href="https://www.uptodate.com/contents/approach-to-the-adult-with-metabolic-acidosis" target="_blank" rel="noopener noreferrer">UpToDate — Approach to the adult with metabolic acidosis ↗</a>
+      <a href="https://www.msdmanuals.com/professional/multimedia/table/primary-changes-and-compensations-in-simple-acid-base-disorders" target="_blank" rel="noopener noreferrer">MSD Manual — Compensation reference ↗</a>
+      <a href="https://www.ncbi.nlm.nih.gov/books/NBK448090/" target="_blank" rel="noopener noreferrer">NCBI — Anion gap and albumin adjustment ↗</a>
+    </section>
+  </main>
+  <footer class="footer ab-footer"><span>© CAPA Tools</span><a href="./" id="footerBack">Tüm hesaplayıcılar</a><a href="https://github.com/denizseyithanoglu/capatools" target="_blank" rel="noopener noreferrer">GitHub ↗</a></footer>
+  <noscript><p class="noscript">Enable JavaScript to calculate.</p></noscript>
+</body>
+</html>
