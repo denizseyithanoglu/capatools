@@ -58,7 +58,6 @@ frailPrefrail:T("1–2: Ön kırılgan.","1–2: Pre-frail.","1–2: مرحلة 
 frailFrail:T("3–5: Kırılganlık taraması pozitif; kapsamlı değerlendirme gerekir.","3–5: Kövrəklik skrininqi müsbət; geniş qiymətləndirmə lazımdır.","3–5: فحص هشاشة إيجابي؛ يلزم تقييم أشمل.","3–5: Frailty screen positive; further assessment needed.")
 };
 var categories = [
-{id:"emergency",icon:"⚕️",title:T("Acil / Genel Dahiliye","Təcili yardım / Ümumi daxili xəstəliklər","الطوارئ / الطب الباطني العام","Emergency / General Medicine")},
 {id:"cardiology",icon:"🫀",title:T("Kardiyoloji","Kardiologiya","أمراض القلب","Cardiology")},
 {id:"pulmonology",icon:"🫁",title:T("Göğüs Hastalıkları","Pulmonologiya","الأمراض الصدرية","Pulmonology")},
 {id:"nephrology",icon:"💧",title:T("Nefroloji","Nefrologiya","أمراض الكلى","Nephrology")},
@@ -83,15 +82,15 @@ var WBC=T("Lökosit","Leykosit","عدد الكريات البيضاء","White bl
 var GLU=T("Kan glukozu","Qan qlükozası","غلوكوز الدم","Blood glucose");
 var yesno=null;
 var tools=[
-m("map","emergency","📈",T("Ortalama arter basıncı (OAB)","Orta arterial təzyiq (OAT)","متوسط الضغط الشرياني (MAP)","Mean arterial pressure (MAP)"),T("Sistolik ve diyastolik kan basıncından OAB tahmini.","Sistolik və diastolik təzyiqdən OAT təxmini.","تقدير المتوسط من الضغط الانقباضي والانبساطي.","Estimate MAP from systolic and diastolic pressure."),
+m("map","cardiology","📈",T("Ortalama arter basıncı (OAB)","Orta arterial təzyiq (OAT)","متوسط الضغط الشرياني (MAP)","Mean arterial pressure (MAP)"),T("Sistolik ve diyastolik kan basıncından OAB tahmini.","Sistolik və diastolik təzyiqdən OAT təxmini.","تقدير المتوسط من الضغط الانقباضي والانبساطي.","Estimate MAP from systolic and diastolic pressure."),
 [n("sbp",SBP,"mmHg",40,300),n("dbp",DBP,"mmHg",10,200)],"mmHg",1,
 T("Yaklaşık formüldür; aritmi ve aşırı kalp hızlarında doğruluğu değişebilir.","Təxmini düsturdur; aritmiya və ekstremal nəbzdə dəqiqlik dəyişə bilər.","معادلة تقريبية وقد تتأثر بالدوران غير المنتظم أو النبض الشديد.","Approximation; accuracy may vary with arrhythmia and extreme heart rates."),
 "MAP = (SBP + 2 × DBP) / 3","NCBI Bookshelf","https://www.ncbi.nlm.nih.gov/books/NBK538226/"),
-m("aniongap","emergency","⚡",T("Anyon açıklığı","Anion boşluğu","الفجوة الأيونية","Anion gap"),T("Potasyum eklenmeden serum anyon açıklığı.","Kaliumsuz serum anion boşluğu.","الفجوة الأيونية دون البوتاسيوم.","Serum anion gap without potassium."),
+m("aniongap","nephrology","⚡",T("Anyon açıklığı","Anion boşluğu","الفجوة الأيونية","Anion gap"),T("Potasyum eklenmeden serum anyon açıklığı.","Kaliumsuz serum anion boşluğu.","الفجوة الأيونية دون البوتاسيوم.","Serum anion gap without potassium."),
 [n("na",NA,"mmol/L",80,200),n("cl",T("Serum klor","Serum xlor","كلوريد المصل","Serum chloride"),"mmol/L",40,160),n("hco3",T("Bikarbonat","Bikarbonat","البيكربونات","Bicarbonate"),"mmol/L",1,60)],"mmol/L",1,
 T("Albümin düzeyi ve laboratuvar referans aralığı sonucu etkiler; burada albümin düzeltmesi yapılmaz.","Albumin səviyyəsi və laboratoriya aralığı nəticəyə təsir edir; albumin korreksiyası edilmir.","يتأثر بالألبومين والمجال المرجعي للمختبر؛ لا يُجرى تصحيح للألبومين.","Albumin and laboratory reference ranges affect interpretation; no albumin correction is applied."),
 "AG = Na − (Cl + HCO₃)","Merck Manual","https://www.merckmanuals.com/professional/nephrology/acid-base-regulation-and-disorders/acid-base-disorders"),
-m("bmi","emergency","📏",T("Vücut kitle indeksi (VKİ)","Bədən kütlə indeksi (BKİ)","مؤشر كتلة الجسم","Body mass index (BMI)"),T("Boy ve ağırlıktan VKİ hesaplama.","Boy və çəkidən BKİ hesablanması.","حساب المؤشر من الطول والوزن.","Calculate BMI from height and weight."),
+m("bmi","endocrinology","📏",T("Vücut kitle indeksi (VKİ)","Bədən kütlə indeksi (BKİ)","مؤشر كتلة الجسم","Body mass index (BMI)"),T("Boy ve ağırlıktan VKİ hesaplama.","Boy və çəkidən BKİ hesablanması.","حساب المؤشر من الطول والوزن.","Calculate BMI from height and weight."),
 [n("weight",WT,"kg",2,400),n("height",HT,"cm",50,250)],"kg/m²",1,
 T("Vücut kompozisyonunu doğrudan ölçmez; gebelik ve özel popülasyonlarda yorum farklıdır.","Bədən tərkibini birbaşa ölçmür; hamiləlik və xüsusi qruplarda şərh fərqlidir.","لا يقيس تركيب الجسم مباشرة، ويختلف تفسيره في الحمل وفئات خاصة.","Does not directly assess body composition; interpretation varies in pregnancy and special populations."),
 "BMI = weight(kg) / height(m)²","WHO","https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index"),
@@ -152,6 +151,6 @@ m("frail","geriatrics","🤝",T("FRAIL kırılganlık ölçeği","FRAIL kövrək
 T("Akut hastalık sırasındaki değişikliklerden ziyade hastalık öncesi işlevi sorgulayın. Tek başına kapsamlı geriatrik değerlendirmenin yerine geçmez.","Kəskin xəstəlikdən əvvəlki funksiyanı qiymətləndirin. Geniş geriatrik müayinəni əvəz etmir.","قيّم القدرة الوظيفية قبل المرض الحاد؛ لا يغني عن التقييم الشامل للمسنين.","Assess usual function before acute illness. The scale does not replace comprehensive geriatric assessment."),
 "FRAIL = fatigue + resistance + ambulation + illnesses + loss (0–5)","Harvard eFrailty","https://efrailty.hsl.harvard.edu/ToolFRAILScale.html")
 ];
-tools.unshift({id:"acidbase",group:"emergency",icon:"⚗️",title:T("Asit-Baz Bozuklukları","Turşu-qələvi pozğunluqları","اضطرابات الحمض والقاعدة","Acid–Base Disorders"),summary:T("Kan gazı analizi, kompansasyon, anyon açıklığı ve delta oranı.","Qan qazı təhlili, kompensasiya, anion boşluğu və delta nisbəti.","تحليل غازات الدم والتعويض والفجوة الأيونية ونسبة دلتا.","ABG interpretation, compensation, anion gap and delta ratio."),customPage:"acidbase.html"});
+tools.unshift({id:"acidbase",group:"nephrology",icon:"⚗️",title:T("Asit-Baz Bozuklukları","Turşu-qələvi pozğunluqları","اضطرابات الحمض والقاعدة","Acid–Base Disorders"),summary:T("Kan gazı analizi, kompansasyon, anyon açıklığı ve delta oranı.","Qan qazı təhlili, kompensasiya, anion boşluğu və delta nisbəti.","تحليل غازات الدم والتعويض والفجوة الأيونية ونسبة دلتا.","ABG interpretation, compensation, anion gap and delta ratio."),customPage:"acidbase.html"});
 root.CAPAData = Object.freeze({UI:UI,categories:categories,tools:tools,languages:["tr","az","ar","en"]});
 })(typeof globalThis !== "undefined" ? globalThis : this);
