@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 const T=(tr,az,ar,en)=>({tr,az,ar,en});
 const L={
 back:T("← Tüm hesaplayıcılar","← Bütün kalkulyatorlar","→ جميع الحاسبات","← All calculators"),
-eyebrow:T("ACİL / GENEL DAHİLİYE","TƏCİLİ / ÜMUMİ DAXİLİ XƏSTƏLİKLƏR","الطوارئ / الطب الباطني العام","EMERGENCY / GENERAL MEDICINE"),
+eyebrow:T("NEFROLOJİ","NEFROLOGİYA","أمراض الكلى","NEPHROLOGY"),
 title:T("Asit-Baz Bozuklukları","Turşu-qələvi pozğunluqları","اضطرابات الحمض والقاعدة","Acid–Base Disorders"),
 intro:T("Kan gazı, kompansasyon, anyon açıklığı ve karma bozuklukları adım adım değerlendirin.","Qan qazı, kompensasiya, anion boşluğu və qarışıq pozğunluqları qiymətləndirin.","تحليل غازات الدم والتعويض والفجوة الأيونية والاضطرابات المختلطة.","Assess blood gases, compensation, anion gap and mixed disorders."),
 agNormalLabel:T("Anyon açıklığı","Anion boşluğu","الفجوة الأيونية","Anion gap"),
