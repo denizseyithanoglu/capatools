@@ -122,7 +122,13 @@ function currentTools(){
     return (state.category==="all" || (state.category==="favorites" && state.favorites.includes(t.id)) || t.group===state.category);
   });
   var q=state.search.trim().toLocaleLowerCase();
-  return tools.filter(function(t){return matchesSearch(t,q);});
+  var filtered=tools.filter(function(t){return matchesSearch(t,q);});
+  var counts=window.CAPAUsage ? window.CAPAUsage.read() : {};
+  var order=Object.create(null);
+  TOOLS.forEach(function(t,i){order[t.id]=i;});
+  return filtered.sort(function(a,b){
+    return (counts[b.id]||0)-(counts[a.id]||0) || order[a.id]-order[b.id];
+  });
 }
 function toggleFavorite(id){
   if (state.favorites.includes(id)) state.favorites=state.favorites.filter(function(x){return x!==id;});
@@ -231,6 +237,7 @@ function renderField(field,idx){
   return block;
 }
 function openCalculator(tool){
+  if(window.CAPAUsage) window.CAPAUsage.record(tool.id);
   if(tool.customPage){window.location.href=tool.customPage;return;}
   state.lastFocus=document.activeElement;
   state.active=tool;
