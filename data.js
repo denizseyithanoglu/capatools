@@ -152,5 +152,6 @@ m("frail","geriatrics","🤝",T("FRAIL kırılganlık ölçeği","FRAIL kövrək
 T("Akut hastalık sırasındaki değişikliklerden ziyade hastalık öncesi işlevi sorgulayın. Tek başına kapsamlı geriatrik değerlendirmenin yerine geçmez.","Kəskin xəstəlikdən əvvəlki funksiyanı qiymətləndirin. Geniş geriatrik müayinəni əvəz etmir.","قيّم القدرة الوظيفية قبل المرض الحاد؛ لا يغني عن التقييم الشامل للمسنين.","Assess usual function before acute illness. The scale does not replace comprehensive geriatric assessment."),
 "FRAIL = fatigue + resistance + ambulation + illnesses + loss (0–5)","Harvard eFrailty","https://efrailty.hsl.harvard.edu/ToolFRAILScale.html")
 ];
+tools.unshift({id:"acidbase",group:"emergency",icon:"⚗️",title:T("Asit-Baz Bozuklukları","Turşu-qələvi pozğunluqları","اضطرابات الحمض والقاعدة","Acid–Base Disorders"),summary:T("Kan gazı analizi, kompansasyon, anyon açıklığı ve delta oranı.","Qan qazı təhlili, kompensasiya, anion boşluğu və delta nisbəti.","تحليل غازات الدم والتعويض والفجوة الأيونية ونسبة دلتا.","ABG interpretation, compensation, anion gap and delta ratio."),customPage:"acidbase.html"});
 root.CAPAData = Object.freeze({UI:UI,categories:categories,tools:tools,languages:["tr","az","ar","en"]});
 })(typeof globalThis !== "undefined" ? globalThis : this);
