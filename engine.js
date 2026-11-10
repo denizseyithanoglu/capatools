@@ -11,6 +11,18 @@
   function compute(id, v) {
     var value, label = "", extra = [];
     switch (id) {
+      case "correctedcalcium":
+        requireNumbers(v, ["calcium", "albumin"]);
+        assert(v.calcium >= 0 && v.calcium <= 25 &&
+          v.albumin >= 0 && v.albumin <= 8, "Invalid calcium or albumin");
+        value = v.calcium + 0.8 * (4 - v.albumin);
+        break;
+      case "caxp":
+        requireNumbers(v, ["calcium", "phosphate"]);
+        assert(v.calcium >= 0 && v.calcium <= 25 &&
+          v.phosphate >= 0 && v.phosphate <= 30, "Invalid calcium or phosphorus");
+        value = v.calcium * v.phosphate;
+        break;
       case "bmi":
         requireNumbers(v, ["weight", "height"]);
         assert(v.height > 0, "Height must be positive");
