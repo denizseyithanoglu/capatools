@@ -8,6 +8,8 @@ var m = function(id,group,icon,title,summary,fields,unit,decimals,warning,formul
 return {id:id,group:group,icon:icon,title:title,summary:summary,fields:fields,unit:unit,decimals:decimals,warning:warning,formula:formula,source:source,sourceUrl:sourceUrl};
 };
 var UI = {
+effectiveOsm:T("Efektif osmolalite (tonisite)","Effektiv osmolallıq (toniklik)","الأسمولالية الفعالة (التوترية)","Effective osmolality (tonicity)"),
+osmolGap:T("Osmolal gap (ölçülen − hesaplanan)","Osmolal fərq (ölçülən − hesablanan)","الفجوة الأسمولالية (المقاسة − المحسوبة)","Osmolal gap (measured − calculated)"),
 brandSubtitle:T("Klinik hesaplayıcılar","Klinik kalkulyatorlar","حاسبات سريرية","Clinical calculators"),
 specialties:T("UZMANLIK ALANLARI","İXTİSAS SAHƏLƏRİ","التخصصات","SPECIALTIES"),
 offline:T("Tarayıcıda çalışır · hasta verisi gönderilmez","Brauzerdə işləyir · xəstə məlumatı göndərilmir","يعمل في المتصفح · لا تُرسل بيانات المرضى","Runs in browser · no patient data sent"),
@@ -114,6 +116,28 @@ m("cg","nephrology","🧪",T("Cockcroft–Gault kreatinin klirensi","Cockcroft�
 [n("age",AGE,"years",18,120),n("weight",T("Formülde kullanılacak ağırlık","Düstur üçün seçilmiş çəki","الوزن المستخدم في المعادلة","Weight selected for formula"),"kg",20,300),n("creatinine",SCR,"mg/dL",0.1,20),s("sex",T("Formülün cinsiyet katsayısı","Düsturun cins əmsalı","معامل الجنس في المعادلة","Sex coefficient in equation"),[{value:"m",label:T("Erkek (×1)","Kişi (×1)","ذكر (×1)","Male (×1)")},{value:"f",label:T("Kadın (×0,85)","Qadın (×0,85)","أنثى (×0.85)","Female (×0.85)")}])],"mL/min",1,
 T("Stabil kreatininde tahmindir; AKI'de güvenilir değildir. Gerçek/ideal/düzeltilmiş ağırlık seçimi ve düşük kas kütlesi özellikle önemlidir. eGFR değildir.","Stabil kreatinində təxmindir; AKI zamanı etibarlı deyil. Çəki seçimi və az əzələ kütləsi vacibdir. eGFR deyil.","تقدير عند ثبات الكرياتينين؛ لا يعتمد عليه في إصابة الكلى الحادة. اختيار الوزن وقلة العضلات مهمان. ليس eGFR.","Estimate assumes stable creatinine; unreliable in AKI. Weight choice and low muscle mass matter, and CrCl is not the same as eGFR."),
 "CrCl = (140 − age) × weight / (72 × SCr); female coefficient ×0.85","NCBI Bookshelf","https://www.ncbi.nlm.nih.gov/books/NBK544228/"),
+m("osmolality","nephrology","🧪",
+T("Serum Osmolalitesi","Serum osmolallığı","أسمولالية المصل","Serum Osmolality"),
+T("Total ve efektif osmolalite; isteğe bağlı osmolal gap.","Ümumi və effektiv osmolallıq; ixtiyari osmolal fərq.","الأسمولالية الكلية والفعالة مع فجوة اختيارية.","Total and effective osmolality, with optional osmolal gap."),
+[
+n("na",NA,"mmol/L",80,200),
+n("glucose",GLU,"mg/dL",0,2500),
+s("nitrogenType",T("Azot parametresi","Azot göstəricisi","نوع قياس اليوريا","Urea measurement type"),[
+{value:"urea",label:T("Üre (mg/dL)","Sidik cövhəri (mg/dL)","اليوريا (mg/dL)","Urea (mg/dL)")},
+{value:"bun",label:T("BUN (mg/dL)","BUN (mg/dL)","نيتروجين يوريا الدم BUN (mg/dL)","BUN (mg/dL)")}
+]),
+n("nitrogen",T("Üre veya BUN değeri","Sidik cövhəri və ya BUN dəyəri","قيمة اليوريا أو BUN","Urea or BUN value"),"mg/dL",0,500,
+T("Yukarıda seçtiğiniz parametrenin sonucunu girin; üre ile BUN aynı değildir.","Yuxarıda seçdiyiniz parametrin nəticəsini daxil edin; urea və BUN eyni deyil.","أدخل قيمة الاختبار المحدد؛ اليوريا وBUN ليسا متماثلين.","Enter the measurement selected above; urea and BUN are not interchangeable.")),
+Object.assign(n("measured",
+T("Ölçülen osmolalite (isteğe bağlı)","Ölçülmüş osmolallıq (ixtiyari)","الأسمولالية المقاسة (اختياري)","Measured osmolality (optional)"),
+"mOsm/kg",150,500),{optional:true})
+],"mOsm/kg",1,
+T("Hesaplanan değer ölçülen osmolalitenin yerine geçmez. Üre ve BUN ayrı dönüşümler gerektirir. Osmolal gap formüle, laboratuvara, etanole ve diğer ozmotik maddelere bağlıdır; normal gap toksik alkol maruziyetini dışlamaz. Klinik değerlendirme şarttır.",
+"Hesablanmış göstərici ölçülmüş osmolallığı əvəz etmir. Urea və BUN fərqli çevrilir. Osmolal fərq laboratoriya, etanol və başqa maddələrdən təsirlənir; normal fərq toksik spirtləri istisna etmir.",
+"الحساب لا يغني عن القياس. تختلف معادلتَا اليوريا وBUN. تعتمد الفجوة على طريقة المختبر والإيثانول والمواد الأخرى؛ الفجوة الطبيعية لا تستبعد التسمم بالكحولات السامة.",
+"Calculated osmolality does not replace direct measurement. Urea and BUN require different conversions. The gap varies with formula, laboratory, ethanol and other solutes; a normal gap does not exclude toxic alcohol exposure."),
+"Total ≈ 2 × Na + glucose/18 + [urea/6 OR BUN/2.8]. Effective = 2 × Na + glucose/18. Osmolal gap = measured − calculated.",
+"QxMD — Serum Osmolality","https://calculate.qxmd.com/storage/calculators/171/Osmolal.html"),
 m("fena","nephrology","💧",T("Fraksiyonel sodyum atılımı (FeNa)","Natriumun fraksional ekskresiyası (FeNa)","الإطراح الجزئي للصوديوم (FeNa)","Fractional excretion of sodium (FeNa)"),T("Eş zamanlı serum ve idrar değerlerinden FeNa.","Eyni vaxtda serum və sidik göstəricilərindən FeNa.","حساب FeNa من عينات البول والدم المتزامنة.","FeNa from paired serum and urine measurements."),
 [n("sna",NA,"mmol/L",80,200),n("una",T("İdrar sodyum","Sidik natrium","صوديوم البول","Urine sodium"),"mmol/L",0,300),n("scr",SCR,"mg/dL",0.1,25),n("ucr",T("İdrar kreatinin","Sidik kreatinin","كرياتينين البول","Urine creatinine"),"mg/dL",1,600)],"%",2,
 T("Serum/idrar örnekleri eş zamanlı olmalıdır; kreatinin birimleri aynı olmalıdır. Diüretikler, KBH ve sepsis FeNa yorumunu sınırlar.","Serum və sidik nümunələri eyni vaxtda olmalı, kreatinin vahidləri eyni olmalıdır. Diuretiklər, XBX və sepsis şərhi məhdudlaşdırır.","ينبغي تزامن العينتين وتطابق وحدات الكرياتينين. المدرات والمرض الكلوي المزمن والإنتان تحد من التفسير.","Use contemporaneous samples and matching creatinine units. Diuretics, CKD and sepsis limit interpretation."),
