@@ -12,12 +12,22 @@ function number(v,k,min,max) {
 }
 function oneOf(v,k,values){var x=v[k];check(values.includes(x),"Invalid "+k);return x;}
 function yn(v,k){return oneOf(v,k,[0,1]);}
-var ids=["sarcf","mnasf","gds15","minicog","mascc","saag","gbs","aims65","prerockall"];
+var ids=["sarcf","mnasf","gds15","minicog","mascc","saag","gbs","aims65","prerockall","ecog","karnofsky"];
 function compute(id,v) {
   check(ids.includes(id),"Unknown score");
   check(v&&typeof v==="object","Missing inputs");
   var score=0,interpretation="",extra=[];
   switch(id) {
+    case "ecog": {
+      score=oneOf(v,"performance",[0,1,2,3,4,5]);
+      interpretation="ecogGrade"+score;
+      break;
+    }
+    case "karnofsky": {
+      score=oneOf(v,"performance",[0,10,20,30,40,50,60,70,80,90,100]);
+      interpretation="kpsGrade"+score;
+      break;
+    }
     case "sarcf": {
       ["sfStrength","sfWalking","sfChair","sfStairs","sfFalls"].forEach(function(k){score+=oneOf(v,k,[0,1,2]);});
       interpretation=score>=4?"sarcPositive":"sarcNegative";
