@@ -58,7 +58,7 @@ function compute(id,v) {
     case "saag": {
       var serum=number(v,"serumAlbumin",0,8),fluid=number(v,"ascitesAlbumin",0,8);
       score=serum-fluid;
-      interpretation=score>=1.1?"saagPortal":"saagOther";
+      interpretation=score>=1.1-1e-9?"saagPortal":"saagOther";
       break;
     }
     case "gbs": {
