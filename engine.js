@@ -9,7 +9,7 @@
     keys.forEach(function (key) { assert(finite(v[key]), "Invalid or missing value: " + key); });
   }
   function compute(id, v) {
-    var value, label = "";
+    var value, label = "", extra = [];
     switch (id) {
       case "bmi":
         requireNumbers(v, ["weight", "height"]);
@@ -24,6 +24,23 @@
       case "aniongap":
         requireNumbers(v, ["na", "cl", "hco3"]);
         value = v.na - v.cl - v.hco3;
+        break;
+      case "osmolality":
+        requireNumbers(v, ["na", "glucose", "nitrogen"]);
+        assert(v.na >= 80 && v.na <= 200 &&
+          v.glucose >= 0 && v.glucose <= 2500 &&
+          v.nitrogen >= 0 && v.nitrogen <= 500, "Out of range osmolality inputs");
+        assert(v.nitrogenType === "urea" || v.nitrogenType === "bun", "Select urea or BUN");
+        var ureaContribution = v.nitrogenType === "urea" ?
+          v.nitrogen / 6 : v.nitrogen / 2.8;
+        var effective = 2 * v.na + v.glucose / 18;
+        value = effective + ureaContribution;
+        extra.push({key:"effectiveOsm", value:effective, unit:"mOsm/kg"});
+        if (typeof v.measured !== "undefined") {
+          requireNumbers(v, ["measured"]);
+          assert(v.measured >= 150 && v.measured <= 500, "Invalid measured osmolality");
+          extra.push({key:"osmolGap", value:v.measured - value, unit:"mOsm/kg"});
+        }
         break;
       case "shock":
         requireNumbers(v, ["hr", "sbp"]);
@@ -100,7 +117,7 @@
         throw new Error("Unknown calculator: " + id);
     }
     assert(Number.isFinite(value), "Non-finite calculated result");
-    return { value: value, interpretation: label };
+    return { value: value, interpretation: label, extra: extra };
   }
   root.CAPACalc = Object.freeze({ compute: compute });
   if (typeof module !== "undefined" && module.exports) module.exports = root.CAPACalc;
