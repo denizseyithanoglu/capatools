@@ -16,3 +16,8 @@ main{padding:32px clamp(22px,4vw,60px) 34px;max-width:1580px;margin:auto}.hero{p
 .calc-extra-row strong{color:var(--text);white-space:nowrap;direction:ltr;unicode-bidi:isolate;font-size:14px}
 :root[data-theme=dark] .calc-extra-results{border-color:#286b61}
 @media(max-width:520px){.calc-extra-row{flex-wrap:wrap}}
+
+/* Long multi-item screening tools use one field per row for accessibility. */
+.fields-grid.single-column{grid-template-columns:1fr}
+.fields-grid.single-column .form-field{padding-bottom:9px;border-bottom:1px solid var(--border)}
+.fields-grid.single-column .form-field:last-child{border-bottom:none}
