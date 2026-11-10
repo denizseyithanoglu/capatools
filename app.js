@@ -216,7 +216,7 @@ function renderField(field,idx){
   }
   input.id=id;
   input.name=field.key;
-  input.required=true;
+  input.required=!field.optional;
   input.dataset.kind=field.kind;
   input.addEventListener("input",function(){
     input.removeAttribute("aria-invalid");
@@ -283,12 +283,13 @@ function onCalculate(e){
     var missing=raw==="";
     var numeric=field.kind==="number" || field.kind==="binary" || field.key==="factor";
     var value=numeric?Number(raw):raw;
-    var bad=missing || (numeric && !Number.isFinite(value)) ||
-      (field.kind==="number" && (!el.validity.valid ||
+    var bad=(missing && !field.optional) || (!missing && numeric && !Number.isFinite(value)) ||
+      (!missing && field.kind==="number" && (!el.validity.valid ||
         (typeof field.min==="number" && value<field.min) ||
         (typeof field.max==="number" && value>field.max)));
     if(bad){valid=false;el.setAttribute("aria-invalid","true");if(!firstInvalid)firstInvalid=el;}
-    else {el.removeAttribute("aria-invalid");v[field.key]=value;}
+    else if(!missing){el.removeAttribute("aria-invalid");v[field.key]=value;}
+    else {el.removeAttribute("aria-invalid");}
   });
   $("calcOutput").hidden=true;
   var error=$("calcError");
@@ -305,6 +306,20 @@ function onCalculate(e){
     $("outputValue").textContent=numberString(res.value,state.active.decimals);
     $("outputUnit").textContent=state.active.unit;
     $("outputInterpretation").textContent=res.interpretation?ui(res.interpretation):"";
+    var extras=$("calcExtraResults");
+    if(!extras){
+      extras=make("div","calc-extra-results");
+      extras.id="calcExtraResults";
+      $("calcOutput").append(extras);
+    }
+    extras.replaceChildren();
+    (res.extra||[]).forEach(function(item){
+      var row=make("div","calc-extra-row");
+      row.append(make("span","",ui(item.key)));
+      row.append(make("strong","",numberString(item.value,state.active.decimals)+" "+item.unit));
+      extras.append(row);
+    });
+    extras.hidden=!(res.extra&&res.extra.length);
     $("calcOutput").hidden=false;
     $("calcOutput").scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
   }catch(err){
