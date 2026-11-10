@@ -255,7 +255,7 @@ function openCalculator(tool){
   $("outputValue").textContent="";
   var form=$("calcForm");
   form.replaceChildren();
-  var grid=make("div","fields-grid");
+  var grid=make("div","fields-grid"+(tool.singleColumn?" single-column":""));
   tool.fields.forEach(function(f,i){grid.append(renderField(f,i));});
   form.append(grid,make("span","form-error",""));
   form.lastChild.id="calcError";
@@ -281,7 +281,7 @@ function onCalculate(e){
     var el=$("calc-field-"+field.key);
     var raw=el.value;
     var missing=raw==="";
-    var numeric=field.kind==="number" || field.kind==="binary" || field.key==="factor";
+    var numeric=field.kind==="number" || field.kind==="binary" || field.key==="factor" || field.numeric===true;
     var value=numeric?Number(raw):raw;
     var bad=(missing && !field.optional) || (!missing && numeric && !Number.isFinite(value)) ||
       (!missing && field.kind==="number" && (!el.validity.valid ||
@@ -301,7 +301,8 @@ function onCalculate(e){
     error.textContent=ui("invalidDifferential");$("calc-field-bands").focus();return;
   }
   try{
-    var res=E.compute(state.active.id,v);
+    var res=(window.CAPAScores && window.CAPAScores.supports(state.active.id))?
+      window.CAPAScores.compute(state.active.id,v):E.compute(state.active.id,v);
     error.textContent="";
     $("outputValue").textContent=numberString(res.value,state.active.decimals);
     $("outputUnit").textContent=state.active.unit;
