@@ -238,6 +238,7 @@ function renderField(field,idx){
 }
 function openCalculator(tool){
   if(window.CAPAUsage) window.CAPAUsage.record(tool.id);
+  if(tool.externalUrl){window.location.href=tool.externalUrl;return;}
   if(tool.customPage){window.location.href=tool.customPage;return;}
   state.lastFocus=document.activeElement;
   state.active=tool;
@@ -301,11 +302,21 @@ function onCalculate(e){
     error.textContent=ui("invalidDifferential");$("calc-field-bands").focus();return;
   }
   try{
-    var res=(window.CAPAScores && window.CAPAScores.supports(state.active.id))?
-      window.CAPAScores.compute(state.active.id,v):E.compute(state.active.id,v);
+    var res;
+    if(window.CAPARheum && window.CAPARheum.supports(state.active.id)){
+      res=window.CAPARheum.compute(state.active.id,v);
+    }else if(window.CAPAFluidPE && window.CAPAFluidPE.supports(state.active.id)){
+      res=window.CAPAFluidPE.compute(state.active.id,v);
+    }else if(window.CAPAScores && window.CAPAScores.supports(state.active.id)){
+      res=window.CAPAScores.compute(state.active.id,v);
+    }else{
+      res=E.compute(state.active.id,v);
+    }
     error.textContent="";
-    $("outputValue").textContent=numberString(res.value,state.active.decimals);
-    $("outputUnit").textContent=state.active.unit;
+    var mainValue=res.displayKey?ui(res.displayKey):numberString(res.value,state.active.decimals);
+    $("outputValue").textContent=mainValue;
+    $("outputValue").classList.toggle("text-result",Boolean(res.displayKey));
+    $("outputUnit").textContent=res.displayKey?"":state.active.unit;
     $("outputInterpretation").textContent=res.interpretation?ui(res.interpretation):"";
     var extras=$("calcExtraResults");
     if(!extras){
@@ -321,6 +332,15 @@ function onCalculate(e){
       extras.append(row);
     });
     extras.hidden=!(res.extra&&res.extra.length);
+    var notesEl=$("calcResultNotes");
+    if(!notesEl){notesEl=make("ul","calc-result-notes");notesEl.id="calcResultNotes";$("calcOutput").append(notesEl);}
+    notesEl.replaceChildren();
+    (res.notes||[]).forEach(function(noteKey){
+      if(!UI[noteKey])return;
+      var li=make("li","",ui(noteKey));
+      notesEl.append(li);
+    });
+    notesEl.hidden=!notesEl.children.length;
     $("calcOutput").hidden=false;
     $("calcOutput").scrollIntoView({block:"nearest",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
   }catch(err){
