@@ -11,6 +11,12 @@
   function compute(id, v) {
     var value, label = "", extra = [];
     switch (id) {
+      case "urinecalcium24h":
+        requireNumbers(v, ["urineCalcium", "urineVolume"]);
+        assert(v.urineCalcium >= 0 && v.urineCalcium <= 1000 &&
+          v.urineVolume >= 1 && v.urineVolume <= 30000, "Invalid urine calcium or 24-hour volume");
+        value = v.urineCalcium * v.urineVolume / 100;
+        break;
       case "correctedcalcium":
         requireNumbers(v, ["calcium", "albumin"]);
         assert(v.calcium >= 0 && v.calcium <= 25 &&

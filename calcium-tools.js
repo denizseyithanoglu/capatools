@@ -35,4 +35,20 @@ D.tools.push({
  source:"KDIGO 2017 CKD-MBD — Recommendation 3.1.5",
  sourceUrl:"https://pmc.ncbi.nlm.nih.gov/articles/PMC6340919/"
 });
+
+D.tools.push({
+ id:"urinecalcium24h",group:"endocrinology",icon:"🧪",
+ title:T("24 Saatlik İdrar Kalsiyum Atılımı","24 saatlıq sidik kalsium ifrazı","طرح الكالسيوم في البول خلال 24 ساعة","24-Hour Urinary Calcium Excretion"),
+ summary:T("İdrar kalsiyum konsantrasyonu ve 24 saatlik toplam hacimden günlük atılımı hesaplar.","Sidik kalsium konsentrasiyası və 24 saatlıq ümumi həcmdən gündəlik ifrazı hesablayır.","حساب الطرح اليومي من تركيز الكالسيوم وحجم البول المجمع خلال 24 ساعة.","Calculate daily excretion from urine calcium concentration and total 24-hour urine volume."),
+ fields:[
+ n("urineCalcium",T("İdrar kalsiyum konsantrasyonu","Sidik kalsium konsentrasiyası","تركيز الكالسيوم في البول","Urine calcium concentration"),"mg/dL",0,1000),
+ n("urineVolume",T("24 saatlik toplam idrar hacmi","24 saatlıq ümumi sidik həcmi","حجم البول الكلي خلال 24 ساعة","Total 24-hour urine volume"),"mL",1,30000)
+ ],
+ unit:"mg/24 h",decimals:1,
+ warning:T("Tam 24 saatlik koleksiyon kullanın. Serum kalsiyumunu veya zaten mg/24 saat olarak raporlanmış sonucu girmeyin. Eksik toplama sonucu etkiler; laboratuvar referans aralığı ve klinik bağlamla değerlendirin.","Tam 24 saatlıq sidik kolleksiyasından istifadə edin. Serum kalsiumunu və ya artıq mg/24 saat kimi verilmiş nəticəni daxil etməyin. Natamam toplama nəticəyə təsir edir; laboratoriya referensləri və klinik vəziyyətlə qiymətləndirin.","استخدم تجميع البول الكامل لمدة 24 ساعة. لا تدخل كالسيوم المصل أو نتيجة محسوبة مسبقاً بوحدة mg/24 h. يؤثر نقص التجميع على النتيجة؛ فسّرها وفق المجال المرجعي للمختبر والسياق السريري.","Use a complete 24-hour collection. Do not enter serum calcium or a result already reported in mg/24 h. Incomplete collection affects the result; interpret using the laboratory reference interval and clinical context."),
+ formula:"Urine Ca (mg/24 h) = urine Ca (mg/dL) × 24-hour urine volume (mL) / 100.",
+ source:"Mayo Clinic Laboratories — CALU: Calcium, 24 Hour, Urine",
+ sourceUrl:"https://www.mayocliniclabs.com/test-catalog/overview/610595"
+});
+
 })(typeof globalThis!=="undefined"?globalThis:this);
