@@ -44,7 +44,7 @@ function renderStatic(){
   document.documentElement.lang=state.lang;
   document.documentElement.dir=state.lang==="ar"?"rtl":"ltr";
   document.documentElement.dataset.theme=state.theme;
-  document.title="CAPA Tools · "+ui("brandSubtitle");
+  document.title="ÇAPATools · "+ui("brandSubtitle");
   $("brandSubtitle").textContent=ui("brandSubtitle");
   $("specialtyLabel").textContent=ui("specialties");
   $("offlineLabel").textContent=ui("offline");

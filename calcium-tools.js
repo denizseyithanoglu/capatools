@@ -51,4 +51,33 @@ D.tools.push({
  sourceUrl:"https://www.mayocliniclabs.com/test-catalog/overview/610595"
 });
 
+
+Object.assign(D.UI,{
+ tmpSI:T("TmP/GFR (SI)","TmP/GFR (SI)","TmP/GFR (SI)","TmP/GFR (SI)"),
+ phosphateTRP:T("Tübüler fosfat geri emilimi (TRP)","Fosfatın tubulyar reabsorbsiyası (TRP)","إعادة امتصاص الفوسفات الأنبوبي (TRP)","Tubular phosphate reabsorption (TRP)"),
+ phosphateFE:T("Fraksiyonel fosfat atılımı (FEPO₄)","Fosfatın fraksional ifrazı (FEPO₄)","الإطراح الجزئي للفوسفات (FEPO₄)","Fractional phosphate excretion (FEPO₄)")
+});
+D.tools.push({
+ id:"tmpgfr",group:"endocrinology",icon:"🧪",
+ title:T("Renal Fosfat — TmP/GFR, TRP ve FEPO₄","Renal fosfat — TmP/GFR, TRP və FEPO₄","الفوسفات الكلوي — TmP/GFR وTRP وFEPO₄","Renal Phosphate — TmP/GFR, TRP and FEPO₄"),
+ summary:T("Erişkinlerde eş zamanlı serum ve idrar fosfat/kreatinin değerlerinden renal fosfat geri emilimini hesaplar.","Böyüklərdə eyni vaxtda alınmış serum və sidik fosfat/kreatinin nəticələrindən fosfat reabsorbsiyasını hesablayır.","حساب إعادة امتصاص الفوسفات لدى البالغين من عينات مصل وبول متزامنة للفوسفات والكرياتينين.","Calculate adult renal phosphate handling from paired serum and urine phosphate/creatinine concentrations."),
+ fields:[
+ {key:"phosphateUnit",kind:"select",label:T("Fosfat birimi (serum ve idrar)","Fosfat vahidi (serum və sidik)","وحدة الفوسفات (المصل والبول)","Phosphate unit (serum and urine)"),options:[{value:"mg/dL",label:"mg/dL"},{value:"mmol/L",label:"mmol/L"}]},
+ {key:"creatinineUnit",kind:"select",label:T("Kreatinin birimi (serum ve idrar)","Kreatinin vahidi (serum və sidik)","وحدة الكرياتينين (المصل والبول)","Creatinine unit (serum and urine)"),options:[{value:"mg/dL",label:"mg/dL"},{value:"umol/L",label:"µmol/L"},{value:"mmol/L",label:"mmol/L"}]},
+ n("serumPhosphate",T("Serum fosfatı — seçilen birim","Serum fosfatı — seçilmiş vahid","فوسفات المصل — الوحدة المختارة","Serum phosphate — selected unit"),"",0.000001),
+ n("urinePhosphate",T("İdrar fosfatı — seçilen birim","Sidik fosfatı — seçilmiş vahid","فوسفات البول — الوحدة المختارة","Urine phosphate — selected unit"),"",0),
+ n("serumCreatinine",T("Serum kreatinini — seçilen birim","Serum kreatinini — seçilmiş vahid","كرياتينين المصل — الوحدة المختارة","Serum creatinine — selected unit"),"",0.000001),
+ n("urineCreatinine",T("İdrar kreatinini — seçilen birim","Sidik kreatinini — seçilmiş vahid","كرياتينين البول — الوحدة المختارة","Urine creatinine — selected unit"),"",0.000001)
+ ],
+ unit:"mg/dL",decimals:2,
+ warning:T(
+ "Erişkin formülü. Tercihen açlıkta, eş zamanlı kan ve ikinci sabah idrarı kullanın; 24 saatlik idrar gerekmez. Serum ve idrar fosfatı aynı birimde, serum ve idrar kreatinini de aynı birimde olmalıdır. Günlük atılım miktarı değil konsantrasyon girin. Hipofosfatemi ile birlikte düşük TmP/GFR renal fosfat kaybını destekler. Yaşa ve yönteme uygun laboratuvar referanslarıyla yorumlayın; KBH ve fosfat tedavisi yorumu etkileyebilir. TRP negatifse birimleri ve örnekleri kontrol edin; araç sonuç vermez.",
+ "Böyüklər üçün düstur. Acqarına eyni vaxtda qan və ikinci səhər sidiyindən istifadə edin; 24 saatlıq sidik tələb olunmur. Serum və sidik fosfatının vahidləri eyni, kreatinin vahidləri də eyni olmalıdır. Gündəlik miqdarı deyil, konsentrasiyanı daxil edin. Hipofosfatemiya ilə aşağı TmP/GFR renal fosfat itkisini dəstəkləyir. Yaşa və metoda uyğun referenslərdən istifadə edin; XBX və fosfat müalicəsi şərhə təsir edə bilər. Mənfi TRP olduqda vahidləri və nümunələri yoxlayın; nəticə verilmir.",
+ "معادلة للبالغين. يفضل أخذ عينات دم وبول متزامنة أثناء الصيام من التبول الصباحي الثاني؛ لا يلزم جمع بول 24 ساعة. يجب توحيد وحدات الفوسفات بين المصل والبول ووحدات الكرياتينين بينهما. أدخل التركيز لا الكمية اليومية. يدعم انخفاض TmP/GFR مع نقص فوسفات الدم فقد الفوسفات الكلوي. استخدم مراجع مناسبة للعمر والطريقة؛ قد يؤثر مرض الكلى المزمن وعلاج الفوسفات على التفسير. إذا كان TRP سالباً راجع الوحدات والعينات؛ لن تظهر نتيجة.",
+ "Adult equation. Prefer fasting paired blood and second morning urine samples; no 24-hour collection is needed. Serum and urine phosphate must share a unit, as must serum and urine creatinine. Enter concentrations, not daily excretion amounts. Low TmP/GFR with hypophosphatemia supports renal phosphate wasting. Use age- and method-appropriate laboratory references; CKD and phosphate treatment can affect interpretation. Negative TRP requires checking units and samples; no result is returned."),
+ formula:"TRP = 1 − (UP × SCr)/(SP × UCr); FEPO₄ = (1 − TRP) × 100%. TRP ≤ 0.86: TmP/GFR = TRP × SP; TRP > 0.86: TmP/GFR = [0.3 × TRP / (1 − 0.8 × TRP)] × SP. Phosphate: 1 mmol/L = 3.0974 mg/dL.",
+ source:"Trombetti et al. — International XLH consensus (2022), adult TmPi/GFR",
+ sourceUrl:"https://www.nature.com/articles/s41574-022-00662-x"
+});
+
 })(typeof globalThis!=="undefined"?globalThis:this);

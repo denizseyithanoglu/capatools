@@ -122,7 +122,7 @@ function renderStatic(){
  $("theme").textContent=theme==="dark"?"☀":"☾";
  Object.keys(L).forEach(k=>{if($(k))setText(k,L[k]);});
  setText("footerBack",L.back);
- document.title=lookup(L.title)+" · CAPA Tools";
+ document.title=lookup(L.title)+" · ÇAPATools";
  const grid=$("guideSteps");grid.replaceChildren();
  steps.forEach(step=>{const tile=document.createElement("div");tile.className="ab-guide-step";const title=document.createElement("b");title.textContent=lookup(step)[0];const p=document.createElement("p");p.textContent=lookup(step)[1];tile.append(title,p);grid.append(tile);});
  const rows=$("formulaRows");rows.replaceChildren();

@@ -11,6 +11,21 @@
   function compute(id, v) {
     var value, label = "", extra = [];
     switch (id) {
+      case "tmpgfr":
+        requireNumbers(v, ["serumPhosphate", "urinePhosphate", "serumCreatinine", "urineCreatinine"]);
+        assert(v.serumPhosphate > 0 && v.urinePhosphate >= 0 &&
+          v.serumCreatinine > 0 && v.urineCreatinine > 0, "Invalid phosphate or creatinine concentration");
+        assert(v.phosphateUnit === "mg/dL" || v.phosphateUnit === "mmol/L", "Invalid phosphate unit");
+        assert(["mg/dL", "umol/L", "mmol/L"].indexOf(v.creatinineUnit) !== -1, "Invalid creatinine unit");
+        var feP = (v.urinePhosphate / v.serumPhosphate) * (v.serumCreatinine / v.urineCreatinine);
+        assert(Number.isFinite(feP) && feP >= 0 && feP <= 1, "TRP outside 0–1: check units and paired samples");
+        var trp = 1 - feP;
+        var serumPmg = v.serumPhosphate * (v.phosphateUnit === "mmol/L" ? 3.0974 : 1);
+        value = (trp <= 0.86 ? trp : 0.3 * trp / (1 - 0.8 * trp)) * serumPmg;
+        extra.push({key:"tmpSI", value:value / 3.0974, unit:"mmol/L"});
+        extra.push({key:"phosphateTRP", value:trp * 100, unit:"%"});
+        extra.push({key:"phosphateFE", value:feP * 100, unit:"%"});
+        break;
       case "urinecalcium24h":
         requireNumbers(v, ["urineCalcium", "urineVolume"]);
         assert(v.urineCalcium >= 0 && v.urineCalcium <= 1000 &&
