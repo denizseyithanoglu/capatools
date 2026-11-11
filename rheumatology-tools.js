@@ -72,7 +72,7 @@ D.tools.push({
  source:"Vanderbilt Steroid Conversion",sourceUrl:"https://vimbook.vumc.org/endocrinology/steroid-conversion"
 });
 D.tools.push({
- id:"stressSteroid",group:"rheumatology",icon:"🛡️",
+ id:"stressSteroid",group:"endocrinology",icon:"🛡️",
  title:T("Steroid Şemsiyesi · Stres Kapsamı","Steroid Örtüyü · Stres","ستيرويد التغطية أثناء الإجهاد","Steroid Stress Coverage Guide"),
  summary:T("Uzun süreli steroid kullanımında stres yanıtını değerlendiren karar desteği.","Uzunmüddətli steroiddə stres dövrü qərar dəstəyi.","إرشاد لتغطية الكورتيزون أثناء المرض أو الجراحة.","Qualitative guide for glucocorticoid stress coverage during illness or surgery."),
  fields:[
