@@ -12,7 +12,7 @@ function number(v,k,min,max) {
 }
 function oneOf(v,k,values){var x=v[k];check(values.includes(x),"Invalid "+k);return x;}
 function yn(v,k){return oneOf(v,k,[0,1]);}
-var ids=["sarcf","mnasf","gds15","minicog","mascc","saag","gbs","aims65","prerockall","ecog","karnofsky"];
+var ids=["sarcf","mnasf","gds15","minicog","mascc","saag","gbs","aims65","prerockall","childpugh","meldna","lille","ecog","karnofsky"];
 function compute(id,v) {
   check(ids.includes(id),"Unknown score");
   check(v&&typeof v==="object","Missing inputs");
@@ -95,6 +95,51 @@ function compute(id,v) {
       score=(albumin<3?1:0)+(inr>1.5?1:0)+yn(v,"altered")+
         (sbpA<=90?1:0)+(ageA>65?1:0);
       interpretation=score>=2?"aimsHigher":"aimsLower";
+      break;
+    }
+    case "childpugh": {
+      var b=number(v,"bilirubin",0.1,80);
+      var alb=number(v,"albumin",0.5,7);
+      var ci=number(v,"inr",0.5,15);
+      var ascites=oneOf(v,"ascites",[0,1,2]);
+      var enceph=oneOf(v,"encephalopathy",[0,1,2]);
+      score=(b<2?1:b<=3?2:3)+(alb>3.5?1:alb>=2.8?2:3)+
+        (ci<1.7?1:ci<=2.3?2:3)+(ascites+1)+(enceph+1);
+      interpretation=score<=6?"childA":score<=9?"childB":"childC";
+      break;
+    }
+    case "meldna": {
+      var mb=number(v,"bilirubin",0.1,80);
+      var mi=number(v,"inr",0.5,15);
+      var mc=number(v,"creatinine",0.1,20);
+      var mn=number(v,"sodium",100,170);
+      var dialysis=yn(v,"dialysis");
+      // OPTN 2016–2023 (legacy): lab floors, creatinine dialysis override, Na bounds.
+      mb=Math.max(1,mb);
+      mi=Math.max(1,mi);
+      mc=dialysis===1?4:Math.max(1,Math.min(4,mc));
+      mn=Math.max(125,Math.min(137,mn));
+      var initial=Math.round(9.57*Math.log(mc)+3.78*Math.log(mb)+
+        11.20*Math.log(mi)+6.43);
+      var delta=137-mn;
+      var adjusted=initial>11 ?
+        initial+1.32*delta-0.033*initial*delta : initial;
+      score=Math.max(6,Math.min(40,Math.round(adjusted)));
+      extra.push({key:"meldBase",value:initial,unit:""});
+      interpretation="meldNaCaution";
+      break;
+    }
+    case "lille": {
+      var la=number(v,"age",18,120);
+      var lalb=number(v,"albumin",0.5,7)*10; // g/dL → g/L
+      var lb0=number(v,"bilirubin0",0.1,80)*17.1; // mg/dL → µmol/L
+      var lb7=number(v,"bilirubin7",0.1,80)*17.1;
+      var lpt=number(v,"pt",5,120);
+      var lr=yn(v,"renalFailure");
+      var R=3.19-0.101*la+0.147*lalb+
+        0.0165*(lb0-lb7)-0.206*lr-0.0065*lb0-0.0096*lpt;
+      score=1/(1+Math.exp(R));
+      interpretation=score>0.45?"lilleNonresponse":"lilleResponse";
       break;
     }
     case "prerockall": {
