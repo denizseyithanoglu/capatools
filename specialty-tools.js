@@ -112,4 +112,70 @@ add("prerockall","gastroenterology","📊",
  T("Sadece pre-endoskopik klinik Rockall (0–7) hesaplanır; tam Rockall skoru değildir. Üst GİS kanamasında GBS, endoskopi öncesi triyaj için daha çok önerilir.","Yalnız endoskopiyadan əvvəlki Rockall (0–7) hesablanır; tam bal deyil.","تحسب الدرجة قبل التنظير فقط (0–7)، وليست روكال الكاملة.","Calculates pre-endoscopic Rockall (0–7), not full Rockall. GBS is generally preferred for pre-endoscopic triage."),
  "Pre-Rockall: age (<60=0, 60–79=1, ≥80=2) + shock (SBP<100=2, HR≥100=1, else=0) + comorbidity (0/2/3).",
  "Risk stratification review (PMC)","https://pmc.ncbi.nlm.nih.gov/articles/PMC5325906/");
+
+Object.assign(D.UI,{
+  childA:T("Child–Pugh A (5–6): görece korunmuş karaciğer fonksiyonu.","Child–Pugh A (5–6): nisbətən qorunmuş qaraciyər funksiyası.","Child–Pugh A (5–6): وظيفة كبدية محفوظة نسبيًا.","Child–Pugh A (5–6): relatively preserved liver function."),
+  childB:T("Child–Pugh B (7–9): orta derecede karaciğer fonksiyon bozukluğu.","Child–Pugh B (7–9): orta dərəcəli qaraciyər disfunksiyası.","Child–Pugh B (7–9): خلل كبدي متوسط.","Child–Pugh B (7–9): moderate hepatic dysfunction."),
+  childC:T("Child–Pugh C (10–15): ileri karaciğer fonksiyon bozukluğu.","Child–Pugh C (10–15): ağır qaraciyər disfunksiyası.","Child–Pugh C (10–15): خلل كبدي شديد.","Child–Pugh C (10–15): severe hepatic dysfunction."),
+  meldBase:T("Başlangıç MELD","İlkin MELD","MELD الأساسي","Initial MELD"),
+  meldNaCaution:T("Klasik MELD-Na (2016–2023); daha yüksek skor daha yüksek mortalite riskiyle ilişkilidir. ABD organ tahsisinde Temmuz 2023'ten beri MELD 3.0 kullanılır.","Klassik MELD-Na (2016–2023); yüksək nəticə artmış ölüm riski ilə bağlıdır. ABŞ-da 2023-cü ildən MELD 3.0 istifadə olunur.","MELD-Na التقليدي (2016–2023)؛ الدرجة الأعلى ترتبط بزيادة خطر الوفاة. تستخدم الولايات المتحدة MELD 3.0 منذ يوليو 2023.","Legacy MELD-Na (2016–2023); higher scores correlate with mortality risk. US allocation has used MELD 3.0 since July 2023."),
+  lilleResponse:T("Lille ≤0,45: kortikosteroide biyokimyasal yanıt lehine; klinikle birlikte yorumlayın.","Lille ≤0,45: kortikosteroidə cavab ehtimalı; klinik qiymətləndirin.","Lille ≤0.45: يشير إلى استجابة للستيرويد؛ فسّره ضمن السياق السريري.","Lille ≤0.45: suggests response to corticosteroids; interpret in clinical context."),
+  lilleNonresponse:T("Lille >0,45: kortikosteroide yanıtsızlık lehine; tedavinin sürdürülmesini klinik olarak yeniden değerlendirin.","Lille >0,45: kortikosteroidə cavabsızlıq; müalicəni yenidən qiymətləndirin.","Lille >0.45: يشير إلى عدم الاستجابة؛ أعد تقييم استمرار الستيرويد سريريًا.","Lille >0.45: suggests corticosteroid nonresponse; clinically reassess continued therapy.")
+});
+
+/* Hepatology scores: Child–Pugh, legacy MELD-Na, Lille day-7. */
+D.tools.push({
+  id:"childpugh",group:"gastroenterology",icon:"🫀",
+  title:T("Child–Pugh Skoru","Child–Pugh Balı","درجة تشايلد–بوغ","Child–Pugh Score"),
+  summary:T("Sirozda beş parametreyle A/B/C sınıflaması.","Sirrozda beş göstərici ilə A/B/C sinfi.","تصنيف شدة التشمع بخمسة معايير إلى A/B/C.","Cirrhosis severity classification from five parameters (A/B/C)."),
+  fields:[
+    n("bilirubin",T("Total bilirubin","Ümumi bilirubin","البيليروبين الكلي","Total bilirubin"),"mg/dL",0.1,80),
+    n("albumin",T("Serum albümin","Serum albumin","ألبومين المصل","Serum albumin"),"g/dL",0.5,7),
+    n("inr",T("INR","INR","INR","INR"),"",0.5,15),
+    s("ascites",T("Asit","Assit","الاستسقاء","Ascites"),[
+      [0,T("Yok","Yoxdur","لا يوجد","None")],
+      [1,T("Hafif / diüretikle kontrollü","Yüngül / diuretiklə nəzarətdə","خفيف / مضبوط بالمدرات","Mild / controlled with diuretics")],
+      [2,T("Orta–ileri / dirençli","Orta–ağır / refrakter","متوسط إلى شديد / مقاوم","Moderate–severe / refractory")]
+    ]),
+    s("encephalopathy",T("Hepatik ensefalopati","Hepatik ensefalopatiya","الاعتلال الدماغي الكبدي","Hepatic encephalopathy"),[
+      [0,T("Yok (evre 0)","Yoxdur (0)","لا يوجد (0)","None (grade 0)")],
+      [1,T("Evre 1–2","Dərəcə 1–2","الدرجة 1–2","Grade 1–2")],
+      [2,T("Evre 3–4","Dərəcə 3–4","الدرجة 3–4","Grade 3–4")]
+    ])
+  ],unit:" / 15",decimals:0,
+  warning:T("Klinik asit ve ensefalopati değerlendirmesi öznel olabilir; mevcut tedavi ve kolestaz sonucu etkileyebilir. Tek başına karar aracı değildir.","Assit və ensefalopatiya qiymətləndirməsi subyektiv ola bilər; təkbaşına qərar verməyin.","تقييم الاستسقاء والاعتلال الدماغي قد يكون ذاتيًا؛ لا تعتمد على الدرجة وحدها.","Ascites and encephalopathy grading can be subjective; treatment and cholestasis affect interpretation. Not a stand-alone decision tool."),
+  formula:"Child–Pugh = bilirubin (1–3) + albumin (1–3) + INR (1–3) + ascites (1–3) + encephalopathy (1–3). A=5–6, B=7–9, C=10–15.",
+  source:"Merck Manual – Child–Turcotte–Pugh",sourceUrl:"https://www.merckmanuals.com/professional/multimedia/table/child-turcotte-pugh-scoring-system"
+});
+D.tools.push({
+  id:"meldna",group:"gastroenterology",icon:"🧮",
+  title:T("MELD-Na (klasik, 2016–2023)","MELD-Na (klassik, 2016–2023)","MELD-Na (التقليدي، 2016–2023)","MELD-Na (legacy, 2016–2023)"),
+  summary:T("Bilirubin, INR, kreatinin ve sodyum ile klasik MELD-Na.","Bilirubin, INR, kreatinin və natrium ilə klassik MELD-Na.","حساب MELD-Na التقليدي من البيليروبين وINR والكرياتينين والصوديوم.","Legacy sodium-adjusted MELD from bilirubin, INR, creatinine and sodium."),
+  fields:[
+    n("bilirubin",T("Total bilirubin","Ümumi bilirubin","البيليروبين الكلي","Total bilirubin"),"mg/dL",0.1,80),
+    n("inr",T("INR","INR","INR","INR"),"",0.5,15),
+    n("creatinine",T("Serum kreatinin","Serum kreatinin","كرياتينين المصل","Serum creatinine"),"mg/dL",0.1,20),
+    n("sodium",T("Serum sodyum","Serum natrium","صوديوم المصل","Serum sodium"),"mmol/L",100,170),
+    y("dialysis",T("Son 7 günde ≥2 diyaliz veya ≥24 saat CVVHD","Son 7 gündə ≥2 dializ və ya ≥24 saat CVVHD","جلستا غسيل على الأقل أو 24 ساعة CVVHD خلال 7 أيام","≥2 dialysis sessions or ≥24 h CVVHD within 7 days"))
+  ],unit:" / 40",decimals:0,
+  warning:T("Klasik OPTN 2016 MELD-Na formülüdür, güncel nakil tahsis skoru değildir (MELD 3.0 kullanılmaktadır). Kreatinin 1–4, bilirubin/INR ≥1, sodyum 125–137 olarak sınırlandırılır. MELD ≤11 ise sodyum düzeltmesi uygulanmaz.","Klassik OPTN 2016 hesabıdır, hazırkı transplantasiya balı deyil (MELD 3.0). Kreatinin 1–4, Na 125–137; ilkin MELD ≤11 olduqda Na düzəlişi yoxdur.","صيغة OPTN 2016 القديمة وليست درجة التخصيص الحالية (MELD 3.0). يحدد الكرياتينين بين 1–4 والصوديوم بين 125–137؛ لا يصحح الصوديوم إذا كان MELD ≤11.","Legacy OPTN 2016 equation, NOT the current allocation score (MELD 3.0). Creatinine capped 1–4; bilirubin/INR floored at 1; sodium capped 125–137. Sodium adjustment only for initial MELD >11."),
+  formula:"MELD(i) = round[9.57 ln(Cr) + 3.78 ln(bilirubin) + 11.20 ln(INR) + 6.43]; if MELD(i)>11: MELD-Na=MELD(i)+1.32(137−Na)−0.033 MELD(i)(137−Na); total bounded 6–40.",
+  source:"Kim et al., MELD 3.0 (prior MELD-Na methods)",sourceUrl:"https://pmc.ncbi.nlm.nih.gov/articles/PMC8608337/"
+});
+D.tools.push({
+  id:"lille",group:"gastroenterology",icon:"🧬",
+  title:T("Lille Skoru (7. gün)","Lille Balı (7-ci gün)","درجة ليل (اليوم السابع)","Lille Score (day 7)"),
+  summary:T("Ağır alkol ilişkili hepatitte 7 günlük kortikosteroid yanıtı.","Ağır alkoqolla əlaqəli hepatitdə 7 günlük steroid cavabı.","استجابة التهاب الكبد الكحولي الشديد للكورتيكوستيرويد بعد 7 أيام.","Day-7 corticosteroid response in severe alcohol-associated hepatitis."),
+  fields:[
+    n("age",age,"years",18,120),
+    n("albumin",T("Başlangıç albümin","İlkin albumin","ألبومين البداية","Baseline albumin"),"g/dL",0.5,7),
+    n("bilirubin0",T("0. gün total bilirubin","0-cı gün ümumi bilirubin","البيليروبين الكلي يوم 0","Day-0 total bilirubin"),"mg/dL",0.1,80),
+    n("bilirubin7",T("7. gün total bilirubin","7-ci gün ümumi bilirubin","البيليروبين الكلي يوم 7","Day-7 total bilirubin"),"mg/dL",0.1,80),
+    n("pt",T("Başlangıç protrombin zamanı (PT)","İlkin protrombin vaxtı (PT)","زمن البروثرومبين الأولي (PT)","Baseline prothrombin time (PT)"),"s",5,120,T("INR değil, saniye cinsinden PT girin.","INR deyil, PT saniyə ilə daxil edin.","أدخل زمن PT بالثواني وليس INR.","Use PT in seconds, NOT INR.")),
+    y("renalFailure",T("Başlangıçta böbrek yetmezliği","İlkin böyrək çatışmazlığı","قصور كلوي عند البداية","Renal insufficiency at baseline"))
+  ],unit:"",decimals:3,
+  warning:T("Sadece ağır alkol ilişkili hepatitte kortikosteroid tedavisinin 7. gününde doğrulanmıştır. Böbrek yetmezliği: kreatinin >1,3 mg/dL veya CrCl <40 mL/dk. 0/7. gün bilirubin mg/dL, albümin g/dL, PT saniye olarak girilir. Tedavi kararı tek başına skora dayanmaz.","Yalnız ağır alkoqol hepatitində steroidin 7-ci günü üçün təsdiqlənib. Böyrək çatışmazlığı: kreatinin >1,3 mg/dL və ya CrCl <40 mL/dəq. Vahidləri yoxlayın.","مُثبت في اليوم السابع من علاج التهاب الكبد الكحولي الشديد بالستيرويد. القصور الكلوي: الكرياتينين >1.3 mg/dL أو تصفية <40 mL/min. تحقق من الوحدات.","Validated at day 7 of corticosteroids for severe alcohol-associated hepatitis. Renal insufficiency: creatinine >1.3 mg/dL or CrCl <40 mL/min. Check units. Never make treatment decisions from the score alone."),
+  formula:"R = 3.19−0.101×age+0.147×albumin(g/L)+0.0165×(bilirubin₀−bilirubin₇)(µmol/L)−0.206×renalFailure−0.0065×bilirubin₀(µmol/L)−0.0096×PT(s); Lille=1/(1+exp(R)).",
+  source:"Louvet et al., Hepatology 2007",sourceUrl:"https://pubmed.ncbi.nlm.nih.gov/17518367/"
+});
 })(typeof globalThis!=="undefined"?globalThis:this);
